@@ -10,22 +10,15 @@ from pathlib import Path
 
 from mhb.agents.base import AgentResult, BaseAgent
 
-FEEDBACK_SUFFIX = """
-
-After completing your work, verify by running: python -m pytest tests/ -v
-If tests fail, fix the issues and re-run. Once all tests pass, stop immediately."""
-
 
 class ClaudeCodeAgent(BaseAgent):
     name = "claude-code"
 
     def run(self, instruction: str, workdir: Path, timeout: int, model: str | None = None, task_id: str | None = None) -> AgentResult:
-        full_instruction = instruction.strip() + FEEDBACK_SUFFIX
-
         cmd = [
             "claude",
             "-p",
-            full_instruction,
+            instruction,
             "--output-format",
             "stream-json",
             "--verbose",
@@ -48,7 +41,6 @@ class ClaudeCodeAgent(BaseAgent):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            # Start in new process group so we can kill the whole tree on timeout
             preexec_fn=os.setsid,
         )
 
@@ -65,7 +57,6 @@ class ClaudeCodeAgent(BaseAgent):
             proc.wait(timeout=timeout)
             timed_out = False
         except subprocess.TimeoutExpired:
-            # Kill the entire process group
             os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
             proc.wait(timeout=5)
             timed_out = True

@@ -2,18 +2,22 @@ from __future__ import annotations
 
 import datetime
 import os
+import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 import yaml
 
-from mhb.agents.base import BaseAgent
+from mhb.agents.base import AgentResult, BaseAgent
 from mhb.evaluation.runner import run_evaluation
 from mhb.reporting.results import write_results
 from mhb.reporting.trajectory import write_trajectory
 from mhb.scoring import compute_correctness, compute_cost, load_pricing
 from mhb.tasks.loader import Task
 from mhb.tasks.workspace import setup_workspace
+
+# Max number of harness-level feedback iterations (agent call + test + retry)
+MAX_ITERATIONS = 3
 
 
 def _get_agent(agent_name: str) -> BaseAgent:
@@ -50,6 +54,19 @@ def _get_timeout(task: Task, tier: str, tier_config: dict) -> int:
     return tier_config.get(tier, {}).get("default_agent_timeout_sec", 300)
 
 
+def _format_test_feedback(eval_result) -> str:
+    """Format test results into a feedback prompt for the next agent iteration."""
+    failed = [t for t in eval_result.test_details if t["status"] != "passed"]
+    passed = [t for t in eval_result.test_details if t["status"] == "passed"]
+    lines = [
+        f"\n{len(passed)}/{eval_result.tests_total} tests passed. The following tests failed:\n",
+    ]
+    for t in failed:
+        lines.append(f"  FAILED: {t['name']}")
+    lines.append("\nFix the remaining failures and verify with: python -m pytest tests/ -v")
+    return "\n".join(lines)
+
+
 def run_single_task(
     agent_name: str,
     model: str,
@@ -60,61 +77,99 @@ def run_single_task(
     pricing: dict,
 ) -> dict:
     agent = _get_agent(agent_name)
-    timeout = _get_timeout(task, tier, tier_config)
+    total_timeout = _get_timeout(task, tier, tier_config)
+    is_oracle = agent_name == "oracle"
 
-    # Setup workspace
     ws = setup_workspace(task)
     try:
-        # Run agent
-        agent_result = agent.run(
-            instruction=task.instruction,
-            workdir=ws.workdir,
-            timeout=timeout,
-            model=model,
-            task_id=task.task_id,
-        )
+        wall_start = time.monotonic()
+        accumulated = AgentResult()
+        eval_result = None
+        correctness = 0.0
+        timed_out = False
 
-        # Run evaluation
-        eval_result = run_evaluation(
-            workdir=ws.workdir,
-            task_dir=task.task_dir,
-            venv_dir=ws.venv_dir,
-        )
+        # Oracle gets a single shot — no feedback loop
+        max_iters = 1 if is_oracle else MAX_ITERATIONS
 
-        # Score
-        correctness = compute_correctness(eval_result.tests_passed, eval_result.tests_total)
-        cost_usd = agent_result.cost_usd
-        if cost_usd is None and agent_result.tokens:
-            cost_usd = compute_cost(agent_result.tokens, model, pricing)
+        for iteration in range(max_iters):
+            elapsed_so_far = time.monotonic() - wall_start
+            remaining = total_timeout - elapsed_so_far
+            if remaining <= 5:
+                timed_out = True
+                break
 
-        # Write trajectory
+            # Build instruction
+            if iteration == 0:
+                instruction = task.instruction
+            else:
+                instruction = task.instruction + _format_test_feedback(eval_result)
+
+            # Run agent with remaining time
+            agent_result = agent.run(
+                instruction=instruction,
+                workdir=ws.workdir,
+                timeout=int(remaining),
+                model=model,
+                task_id=task.task_id,
+            )
+            accumulated = accumulated.merge(agent_result)
+
+            if agent_result.timed_out:
+                timed_out = True
+
+            # Run evaluation
+            eval_result = run_evaluation(
+                workdir=ws.workdir,
+                task_dir=task.task_dir,
+                venv_dir=ws.venv_dir,
+            )
+            correctness = compute_correctness(eval_result.tests_passed, eval_result.tests_total)
+
+            # Early exit: all tests pass
+            if correctness >= 1.0:
+                break
+
+            # Don't retry if we timed out
+            if timed_out:
+                break
+
+        total_wall = time.monotonic() - wall_start
+        test_wall = eval_result.wall_time_sec if eval_result else 0.0
+
+        # Cost
+        cost_usd = accumulated.cost_usd
+        if cost_usd is None or (cost_usd == 0 and accumulated.tokens):
+            cost_usd = compute_cost(accumulated.tokens, model, pricing)
+
+        # Trajectory
         traj_path = results_dir / "trajectories" / f"{task.task_id}.jsonl"
-        write_trajectory(agent_result.trajectory_events, traj_path)
+        write_trajectory(accumulated.trajectory_events, traj_path)
 
-        # Determine failure mode
+        # Failure mode
         failure_mode = None
-        if agent_result.timed_out:
+        if timed_out and correctness < 1.0:
             failure_mode = "timeout"
-        elif agent_result.exit_code != 0:
+        elif accumulated.exit_code != 0 and correctness < 1.0:
             failure_mode = "agent_error"
         elif correctness < 1.0:
             failure_mode = "incorrect"
 
         return {
             "correctness": correctness,
-            "tests_passed": eval_result.tests_passed,
-            "tests_total": eval_result.tests_total,
-            "test_details": eval_result.test_details,
-            "tokens": agent_result.tokens,
+            "tests_passed": eval_result.tests_passed if eval_result else 0,
+            "tests_total": eval_result.tests_total if eval_result else 0,
+            "test_details": eval_result.test_details if eval_result else [],
+            "tokens": accumulated.tokens,
             "cost_usd": cost_usd or 0.0,
             "wall_time_sec": {
-                "agent": agent_result.wall_time_sec,
-                "test": eval_result.wall_time_sec,
-                "total": agent_result.wall_time_sec + eval_result.wall_time_sec,
+                "agent": total_wall - test_wall,
+                "test": test_wall,
+                "total": total_wall,
             },
-            "timed_out": agent_result.timed_out,
-            "max_agent_time_sec": timeout,
+            "timed_out": timed_out,
+            "max_agent_time_sec": total_timeout,
             "failure_mode": failure_mode,
+            "iterations": min(iteration + 1, max_iters),
         }
     finally:
         ws.cleanup()
@@ -162,12 +217,13 @@ def run_benchmark(
                         "timed_out": False,
                         "max_agent_time_sec": 0,
                         "failure_mode": f"harness_error: {e}",
+                        "iterations": 0,
                     }
 
     # Compute summary
     attempted = len(task_results)
     fully_solved = sum(1 for r in task_results.values() if r["correctness"] >= 1.0)
-    timed_out = sum(1 for r in task_results.values() if r.get("timed_out", False))
+    timed_out_count = sum(1 for r in task_results.values() if r.get("timed_out", False))
     mean_correctness = sum(r["correctness"] for r in task_results.values()) / attempted if attempted else 0.0
     total_cost = sum(r.get("cost_usd", 0) or 0 for r in task_results.values())
     total_tokens = 0
@@ -185,6 +241,7 @@ def run_benchmark(
             "tier": tier,
             "concurrency": concurrency,
             "default_agent_timeout_sec": tier_config.get(tier, {}).get("default_agent_timeout_sec", 300),
+            "max_iterations": MAX_ITERATIONS,
         },
         "tasks": task_results,
         "summary": {
@@ -193,7 +250,7 @@ def run_benchmark(
             "total_tokens": total_tokens,
             "tasks_attempted": attempted,
             "tasks_fully_solved": fully_solved,
-            "tasks_timed_out": timed_out,
+            "tasks_timed_out": timed_out_count,
             "total_wall_time_sec": total_wall,
         },
     }

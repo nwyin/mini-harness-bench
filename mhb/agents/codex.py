@@ -9,22 +9,15 @@ from pathlib import Path
 
 from mhb.agents.base import AgentResult, BaseAgent
 
-FEEDBACK_SUFFIX = """
-
-After completing your work, verify by running: python -m pytest tests/ -v
-If tests fail, fix the issues and re-run. Once all tests pass, stop immediately."""
-
 
 class CodexAgent(BaseAgent):
     name = "codex"
 
     def run(self, instruction: str, workdir: Path, timeout: int, model: str | None = None, task_id: str | None = None) -> AgentResult:
-        full_instruction = instruction.strip() + FEEDBACK_SUFFIX
-
         cmd = ["codex", "exec", "--sandbox", "danger-full-access"]
         if model:
             cmd.extend(["--model", model])
-        cmd.extend(["--", full_instruction])
+        cmd.extend(["--", instruction])
 
         start = time.monotonic()
         stdout_chunks: list[str] = []

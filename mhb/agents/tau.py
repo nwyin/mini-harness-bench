@@ -11,11 +11,6 @@ from pathlib import Path
 
 from mhb.agents.base import AgentResult, BaseAgent
 
-FEEDBACK_SUFFIX = """
-
-After completing your work, verify by running: python -m pytest tests/ -v
-If tests fail, fix the issues and re-run. Once all tests pass, stop immediately."""
-
 
 class TauAgent(BaseAgent):
     name = "tau"
@@ -23,12 +18,11 @@ class TauAgent(BaseAgent):
     def run(self, instruction: str, workdir: Path, timeout: int, model: str | None = None, task_id: str | None = None) -> AgentResult:
         trace_dir = Path(tempfile.mkdtemp(prefix="mhb-tau-trace-"))
         stats_path = trace_dir / "tau-stats.json"
-        full_instruction = instruction.strip() + FEEDBACK_SUFFIX
 
         cmd = [
             "tau",
             "--prompt",
-            full_instruction,
+            instruction,
             "--tools",
             "bash,file_read,file_write,file_edit,grep,glob",
             "--trace-output",
@@ -80,7 +74,6 @@ class TauAgent(BaseAgent):
         stdout = "".join(stdout_chunks)
         stderr = "".join(stderr_chunks)
 
-        # Tau writes structured output to files regardless of timeout
         events = _parse_trace_jsonl(trace_dir / "trace.jsonl")
         tokens, cost = _parse_run_json(trace_dir / "run.json")
 
