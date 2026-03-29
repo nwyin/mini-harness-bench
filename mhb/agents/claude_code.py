@@ -25,7 +25,7 @@ class ClaudeCodeAgent(BaseAgent):
             "--allowedTools",
             "Edit,Write,Bash,Read,Glob,Grep",
             "--max-turns",
-            "50",
+            "20",
             "--dangerously-skip-permissions",
         ]
         if model:
