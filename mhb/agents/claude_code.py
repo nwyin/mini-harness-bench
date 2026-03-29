@@ -32,8 +32,7 @@ class ClaudeCodeAgent(BaseAgent):
             "Edit,Write,Bash,Read,Glob,Grep",
             "--max-turns",
             "50",
-            "--permission-mode",
-            "bypassPermissions",
+            "--dangerously-skip-permissions",
         ]
         if model:
             cmd.extend(["--model", model])
