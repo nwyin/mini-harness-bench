@@ -2,7 +2,7 @@
 # Each tier includes all tasks from lower tiers (smoke < standard < full)
 tiers:
   smoke:
-    default_agent_timeout_sec: 60
+    default_agent_timeout_sec: 90
   standard:
     default_agent_timeout_sec: 120
   full:
