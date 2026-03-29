@@ -1,14 +1,10 @@
 from __future__ import annotations
 
 import json
-import os
-import signal
-import subprocess
-import threading
-import time
 from pathlib import Path
 
 from mhb.agents.base import AgentResult, BaseAgent
+from mhb.agents.subprocess_util import run_with_streaming
 
 
 class ClaudeCodeAgent(BaseAgent):
@@ -31,49 +27,14 @@ class ClaudeCodeAgent(BaseAgent):
         if model:
             cmd.extend(["--model", model])
 
-        start = time.monotonic()
-        stdout_chunks: list[str] = []
-        stderr_chunks: list[str] = []
-
-        proc = subprocess.Popen(
-            cmd,
-            cwd=workdir,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            preexec_fn=os.setsid,
-        )
-
-        def _read_stream(stream, chunks):
-            for line in stream:
-                chunks.append(line)
-
-        stdout_thread = threading.Thread(target=_read_stream, args=(proc.stdout, stdout_chunks))
-        stderr_thread = threading.Thread(target=_read_stream, args=(proc.stderr, stderr_chunks))
-        stdout_thread.start()
-        stderr_thread.start()
-
-        try:
-            proc.wait(timeout=timeout)
-            timed_out = False
-        except subprocess.TimeoutExpired:
-            os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
-            proc.wait(timeout=5)
-            timed_out = True
-
-        stdout_thread.join(timeout=2)
-        stderr_thread.join(timeout=2)
-
-        elapsed = time.monotonic() - start
-        stdout = "".join(stdout_chunks)
-        stderr = "".join(stderr_chunks)
+        stdout, stderr, rc, timed_out, elapsed = run_with_streaming(cmd, workdir, timeout)
 
         events = _parse_stream_json(stdout)
         tokens = _extract_tokens(events)
         return AgentResult(
             stdout=stdout,
             stderr=stderr,
-            exit_code=proc.returncode or 0,
+            exit_code=rc,
             timed_out=timed_out,
             wall_time_sec=elapsed,
             tokens=tokens,
