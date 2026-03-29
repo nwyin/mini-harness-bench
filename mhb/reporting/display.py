@@ -19,10 +19,12 @@ def format_results_table(results: dict) -> str:
         wall = data.get("wall_time_sec", {}).get("total", 0.0)
         timed_out = data.get("timed_out", False)
 
-        if timed_out:
-            status = "timeout"
-        elif correctness >= 1.0:
+        if correctness >= 1.0:
             status = "passed"
+        elif timed_out and correctness == 0.0:
+            status = "timeout"
+        elif timed_out:
+            status = "timeout*"
         elif correctness > 0.0:
             status = "partial"
         else:
