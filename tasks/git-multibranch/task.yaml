@@ -1,0 +1,31 @@
+instruction: |
+  You are in a git repository with a `main` branch and three feature branches:
+  `feature-auth`, `feature-logging`, and `feature-config`. Each branch modifies
+  overlapping files, creating merge conflicts.
+
+  Your task:
+  1. Merge all three feature branches into `main` (in any order)
+  2. Resolve all merge conflicts correctly by combining the changes from each
+     branch — do NOT discard any branch's work
+  3. The final `main` branch should contain the combined work from all branches
+
+  The files involved are:
+  - `app.py`: each branch adds different functions
+  - `config.py`: each branch adds different configuration values
+  - `README.md`: each branch adds a different section
+
+  Rules for conflict resolution:
+  - In `app.py`, keep ALL functions from ALL branches
+  - In `config.py`, keep ALL config values from ALL branches
+  - In `README.md`, keep ALL sections from ALL branches, ordered alphabetically
+    by section title
+
+  After merging, you should be on the `main` branch with all conflicts resolved
+  and committed.
+
+  Run `pytest tests/ -v` to verify your solution.
+category: software-engineering
+difficulty: medium
+tier: standard
+tags: [git, merge, conflict-resolution]
+expert_time_estimate_min: 10

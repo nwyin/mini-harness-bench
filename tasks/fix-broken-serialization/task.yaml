@@ -1,0 +1,23 @@
+instruction: |
+  The file `models.py` contains a data model system with `to_json()` and
+  `from_json()` methods. The serialization is broken — objects do not roundtrip
+  correctly through JSON.
+
+  There are multiple bugs:
+  - Datetime fields are not serialized/deserialized properly
+  - Enum values lose their type during serialization
+  - Nested objects are not reconstructed on deserialization
+  - Optional fields cause crashes when None
+
+  Fix the `to_json()` and `from_json()` methods (and any helpers) so that all
+  model types roundtrip correctly through JSON serialization.
+
+  Do NOT change the class attributes, __init__ signatures, or add new classes.
+  Only fix the serialization/deserialization logic.
+
+  Run `pytest tests/ -v` to verify your solution.
+category: debugging
+difficulty: medium
+tier: standard
+tags: [debugging, serialization, json, datetime]
+expert_time_estimate_min: 5

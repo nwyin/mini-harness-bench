@@ -1,0 +1,2 @@
+#!/bin/bash
+uv pip install pandas>=2.0 pyarrow>=14.0

@@ -1,0 +1,7 @@
+{
+  "backend": "redis",
+  "host": "cache.example.com",
+  "port": 6379,
+  "max_entries": 10000,
+  "debug_mode": true
+}

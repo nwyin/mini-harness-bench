@@ -1,0 +1,30 @@
+instruction: |
+  Implement the data pipeline in `pipeline.py`. The skeleton file defines the interface;
+  you must fill in the implementation.
+
+  The pipeline processes CSV files through these steps:
+  1. **read_csv(path)** -> list[dict]: Read a CSV file into a list of row dicts
+  2. **validate_schema(rows, schema)** -> tuple[list[dict], list[str]]:
+     Validate that each row has the required columns with correct types.
+     Return (valid_rows, error_messages). Schema format:
+     `{"column_name": "str|int|float|bool", ...}`
+  3. **transform(rows, transforms)** -> list[dict]: Apply transformations.
+     Each transform is a dict: `{"column": "col", "operation": "upper|lower|round|strip|abs", ...}`
+     - `upper`/`lower`: string case conversion
+     - `round`: round float to `decimals` decimal places
+     - `strip`: strip whitespace from strings
+     - `abs`: absolute value of numeric columns
+  4. **validate_output(rows, constraints)** -> tuple[bool, list[str]]:
+     Validate output against constraints. Constraint format:
+     `{"column": "col", "rule": "not_null|unique|min|max|in", "value": ...}`
+  5. **write_csv(rows, path)** -> None: Write list of dicts to CSV file
+
+  An example CSV file `example.csv` is provided in the workspace. The pipeline must
+  handle edge cases: empty files, missing columns, type mismatches, empty strings.
+
+  Run `pytest tests/ -v` to verify.
+category: devops
+difficulty: medium
+tier: full
+tags: [data-pipeline, csv, validation]
+expert_time_estimate_min: 8

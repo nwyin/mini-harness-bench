@@ -1,0 +1,46 @@
+instruction: |
+  Write a log parser `parser.py` that reads semi-structured application logs
+  and outputs structured JSON.
+
+  The parser should expose a function:
+      parse_log(log_text: str) -> list[dict]
+
+  Each log line follows one of these formats:
+  - Standard: `[YYYY-MM-DD HH:MM:SS] LEVEL module: message`
+  - Request: `[YYYY-MM-DD HH:MM:SS] LEVEL module: METHOD /path STATUS_CODE TIME_MSms`
+  - Error with trace: `[YYYY-MM-DD HH:MM:SS] ERROR module: message\n  Traceback: exception_text`
+
+  Where:
+  - LEVEL is one of: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  - module is a dotted module name like `app.auth` or `server.http`
+  - For request lines: METHOD is GET/POST/PUT/DELETE, STATUS_CODE is an integer,
+    TIME_MS is an integer (milliseconds)
+
+  Each parsed entry should be a dict with keys:
+  - "timestamp": ISO format string "YYYY-MM-DDTHH:MM:SS"
+  - "level": uppercase level string
+  - "module": module name string
+  - "message": the message text
+  - "type": "standard", "request", or "error"
+
+  For request entries, also include:
+  - "method": HTTP method
+  - "path": URL path
+  - "status_code": integer
+  - "response_time_ms": integer
+
+  For error entries with traceback, also include:
+  - "traceback": the traceback text (stripped of leading whitespace)
+
+  Lines that don't match any format should be skipped.
+
+  The script should also work as a CLI: `python parser.py input.log output.json`
+
+  An example log file `example.log` is provided for reference.
+
+  Run `pytest tests/ -v` to verify your solution.
+category: data-science
+difficulty: medium
+tier: standard
+tags: [parsing, regex, logs, json]
+expert_time_estimate_min: 5

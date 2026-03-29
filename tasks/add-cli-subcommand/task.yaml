@@ -1,0 +1,25 @@
+instruction: |
+  You have an existing CLI application `app.py` that uses argparse with
+  subcommands `init` and `status`. Add a new `deploy` subcommand.
+
+  The `deploy` subcommand should:
+  - Accept `--env` flag with choices "staging" or "production" (required)
+  - Accept `--version` flag as a string (required)
+  - Accept an optional `--dry-run` boolean flag (default False)
+  - When executed, print a JSON object to stdout with keys:
+    - "action": "deploy"
+    - "environment": the --env value
+    - "version": the --version value
+    - "dry_run": boolean from --dry-run flag
+  - If `--env` is "production" and `--dry-run` is not set, also include
+    "confirmation_required": true in the JSON output
+  - The JSON output should be compact (no extra whitespace)
+
+  Do NOT modify the existing `init` or `status` subcommands.
+
+  Run `pytest tests/ -v` to verify your solution.
+category: software-engineering
+difficulty: easy
+tier: standard
+tags: [cli, argparse, subcommand]
+expert_time_estimate_min: 5

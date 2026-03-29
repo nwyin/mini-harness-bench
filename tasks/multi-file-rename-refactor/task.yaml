@@ -1,0 +1,24 @@
+instruction: |
+  The codebase uses a class called `DataProcessor` across 8 Python files. Rename it to
+  `PipelineExecutor` everywhere: class definition, imports, instantiations, type hints,
+  and docstrings.
+
+  Files to update:
+  - `processor.py` (class definition)
+  - `pipeline.py` (imports and uses DataProcessor)
+  - `runner.py` (imports and uses DataProcessor)
+  - `config.py` (references DataProcessor in factory function)
+  - `validators.py` (type hints referencing DataProcessor)
+  - `hooks.py` (callback that receives DataProcessor)
+  - `registry.py` (registers DataProcessor by name)
+  - `cli.py` (creates and runs DataProcessor)
+
+  The rename must be complete — no leftover references to `DataProcessor` except in
+  comments that explain the rename history. All functional behavior must remain identical.
+
+  Run `pytest tests/ -v` to verify.
+category: software-engineering
+difficulty: medium
+tier: full
+tags: [refactoring, rename, multi-file]
+expert_time_estimate_min: 8

@@ -1,0 +1,52 @@
+{
+  "users": [
+    {
+      "user_id": 1,
+      "name": "Alice Johnson",
+      "email": "alice@example.com",
+      "orders": [
+        {"order_id": "ORD-001", "product": "Laptop", "amount": 1299.99, "date": "2024-01-15"},
+        {"order_id": "ORD-002", "product": "Mouse", "amount": 29.99, "date": "2024-02-03"},
+        {"order_id": "ORD-003", "product": "Keyboard", "amount": 79.99, "date": "2024-03-10"}
+      ]
+    },
+    {
+      "user_id": 2,
+      "name": "Bob Smith",
+      "email": "bob@example.com",
+      "orders": [
+        {"order_id": "ORD-004", "product": "Monitor", "amount": 499.99, "date": "2024-01-20"},
+        {"order_id": "ORD-005", "product": "Webcam", "amount": 89.99, "date": "2024-04-05"}
+      ]
+    },
+    {
+      "user_id": 3,
+      "name": "Carol White",
+      "email": "carol@example.com",
+      "orders": [
+        {"order_id": "ORD-006", "product": "Desk", "amount": 349.99, "date": "2024-02-14"},
+        {"order_id": "ORD-007", "product": "Chair", "amount": 599.99, "date": "2024-02-14"},
+        {"order_id": "ORD-008", "product": "Lamp", "amount": 45.99, "date": "2024-05-01"},
+        {"order_id": "ORD-009", "product": "Bookshelf", "amount": 189.99, "date": "2024-06-15"}
+      ]
+    },
+    {
+      "user_id": 4,
+      "name": "David Brown",
+      "email": "david@example.com",
+      "orders": [
+        {"order_id": "ORD-010", "product": "Headphones", "amount": 199.99, "date": "2024-03-22"}
+      ]
+    },
+    {
+      "user_id": 5,
+      "name": "Eve Davis",
+      "email": "eve@example.com",
+      "orders": [
+        {"order_id": "ORD-011", "product": "Tablet", "amount": 449.99, "date": "2024-04-10"},
+        {"order_id": "ORD-012", "product": "Stylus", "amount": 39.99, "date": "2024-04-10"},
+        {"order_id": "ORD-013", "product": "Case", "amount": 24.99, "date": "2024-04-11"}
+      ]
+    }
+  ]
+}

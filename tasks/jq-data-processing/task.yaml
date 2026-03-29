@@ -1,0 +1,41 @@
+instruction: |
+  You have a `data.json` file containing a list of users, each with nested
+  orders. Write a script `transform.py` that reads this file and produces
+  `output.json` with the following transformations:
+
+  1. Compute each user's total spending (sum of all order amounts)
+  2. Find each user's most expensive order
+  3. Produce an output JSON file with this structure:
+     ```json
+     {
+       "summary": [
+         {
+           "user_id": 1,
+           "name": "...",
+           "email": "...",
+           "total_spent": 123.45,
+           "order_count": 3,
+           "most_expensive_order": {
+             "order_id": "...",
+             "amount": 99.99,
+             "product": "..."
+           }
+         }
+       ],
+       "total_revenue": 999.99,
+       "top_spender": "..."
+     }
+     ```
+  4. The `summary` list should be sorted by `total_spent` descending
+  5. `total_revenue` is the sum of all orders across all users
+  6. `top_spender` is the name of the user who spent the most
+
+  Use only the Python standard library (json module). No pandas or third-party
+  libraries needed.
+
+  Run `pytest tests/ -v` to verify your solution.
+category: data-science
+difficulty: easy
+tier: standard
+tags: [json, data-transformation, scripting]
+expert_time_estimate_min: 5

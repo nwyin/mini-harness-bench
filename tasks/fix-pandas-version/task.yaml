@@ -1,0 +1,18 @@
+instruction: |
+  The file `analysis.py` was written for an older version of pandas and uses several
+  deprecated APIs that no longer work with pandas 2.x. Fix `analysis.py` so it works
+  with pandas >= 2.0.
+
+  Known issues:
+  1. `DataFrame.append()` was removed in pandas 2.0 — use `pd.concat()` instead
+  2. `pd.np` accessor was removed — use `import numpy as np` directly
+  3. `DataFrame.swaplevel(0, 1)` positional args changed — use keyword args `i=` and `j=`
+  4. `Series.is_monotonic` was removed — use `Series.is_monotonic_increasing`
+  5. `DataFrame.iteritems()` was removed — use `DataFrame.items()`
+
+  Run `pytest tests/ -v` to verify.
+category: debugging
+difficulty: easy
+tier: smoke
+tags: [debugging, pandas, version-compat]
+expert_time_estimate_min: 5

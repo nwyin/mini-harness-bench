@@ -1,0 +1,7 @@
+[2024-06-02 14:00:00] INFO server.http: GET /api/users 200 15ms
+[2024-06-02 14:00:30] ERROR app.auth: Authentication failed for user admin
+  Traceback: AuthenticationError: invalid credentials
+[2024-06-02 14:01:00] ERROR app.database: Query timeout exceeded
+  Traceback: TimeoutError: query exceeded 30s limit
+[2024-06-02 14:01:05] CRITICAL app.main: Unrecoverable error, shutting down
+[2024-06-02 14:01:06] INFO server.http: GET /api/health 503 2ms

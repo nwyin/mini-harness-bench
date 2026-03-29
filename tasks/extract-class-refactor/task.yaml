@@ -1,0 +1,23 @@
+instruction: |
+  The file `monolith.py` contains a god class `AppManager` that handles configuration,
+  logging, and metrics collection — all in one ~400-line file. Your job is to extract
+  the metrics-related functionality into a new class `MetricsCollector` in a new file
+  `metrics.py`.
+
+  Specifically:
+  1. Create `metrics.py` containing a `MetricsCollector` class with the metrics-related
+     methods currently in `AppManager`: `record_metric`, `get_metric`, `get_all_metrics`,
+     `aggregate_metrics`, `reset_metrics`, and `export_metrics_report`.
+  2. `MetricsCollector` should be initialized with a `namespace` string parameter.
+  3. Update `AppManager` in `monolith.py` to use `MetricsCollector` internally
+     (composition, not inheritance). `AppManager` should still expose the same public
+     metrics methods by delegating to its internal `MetricsCollector` instance.
+  4. Update `main.py` and `utils.py` to also import `MetricsCollector` from `metrics`
+     where they use standalone metrics collection.
+
+  Run `pytest tests/ -v` to verify your refactor.
+category: software-engineering
+difficulty: medium
+tier: full
+tags: [refactoring, extract-class, multi-file]
+expert_time_estimate_min: 8

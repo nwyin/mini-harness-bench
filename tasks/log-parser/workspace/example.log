@@ -1,0 +1,9 @@
+[2024-03-15 08:00:01] INFO server.http: Server starting on port 8080
+[2024-03-15 08:00:02] DEBUG app.config: Loading configuration from /etc/app/config.yaml
+[2024-03-15 08:00:05] INFO server.http: GET /api/health 200 12ms
+[2024-03-15 08:01:30] INFO server.http: POST /api/users 201 45ms
+[2024-03-15 08:01:31] WARNING app.auth: Rate limit approaching for IP 192.168.1.100
+[2024-03-15 08:02:15] ERROR app.database: Connection pool exhausted
+  Traceback: ConnectionError: cannot connect to database at localhost:5432
+[2024-03-15 08:02:16] INFO server.http: GET /api/users 500 5023ms
+[2024-03-15 08:03:00] INFO app.scheduler: Cron job cleanup_sessions completed

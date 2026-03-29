@@ -1,0 +1,17 @@
+{"timestamp": "2024-06-15T10:00:01Z", "level": "INFO", "event": "server_start", "message": "Server starting up"}
+{"timestamp": "2024-06-15T10:00:05Z", "level": "INFO", "event": "request", "type": "profile_update", "user_id": "user_42", "payload_keys": ["name", "email", "preferences"]}
+{"timestamp": "2024-06-15T10:00:05Z", "level": "INFO", "event": "response", "user_id": "user_42", "status": "ok"}
+{"timestamp": "2024-06-15T10:00:06Z", "level": "INFO", "event": "request", "type": "profile_update", "user_id": "user_42", "payload_keys": ["address", "phone"]}
+{"timestamp": "2024-06-15T10:00:06Z", "level": "WARNING", "event": "cache_anomaly", "user_id": "user_42", "message": "Cache read between two concurrent updates returned partial data: 'preferences' field present but 'name' field missing. Expected both fields from first update."}
+{"timestamp": "2024-06-15T10:00:06Z", "level": "INFO", "event": "response", "user_id": "user_42", "status": "ok"}
+{"timestamp": "2024-06-15T10:00:07Z", "level": "INFO", "event": "request", "type": "query", "user_id": "user_42"}
+{"timestamp": "2024-06-15T10:00:07Z", "level": "ERROR", "event": "data_corruption", "user_id": "user_42", "message": "Query returned inconsistent cache state. Fields from second update overwrite first update's data. Cache update is not atomic - the read-modify-write in UserCache.update() interleaves."}
+{"timestamp": "2024-06-15T10:01:00Z", "level": "INFO", "event": "request", "type": "order", "user_id": "user_99", "item_count": 150, "note": "Large bulk order"}
+{"timestamp": "2024-06-15T10:01:01Z", "level": "WARNING", "event": "precision_error", "user_id": "user_99", "message": "Order total calculated as 14999.999999999996 but expected 15000.00. Floating-point accumulation error from 150 items at $100.00 each. OrderCalculator.calculate_total() uses float addition which loses precision."}
+{"timestamp": "2024-06-15T10:01:01Z", "level": "INFO", "event": "response", "user_id": "user_99", "status": "ok", "total": 14999.999999999996}
+{"timestamp": "2024-06-15T10:02:00Z", "level": "INFO", "event": "request", "type": "order", "user_id": "user_55", "metadata": "not-valid-json{{{"}
+{"timestamp": "2024-06-15T10:02:00Z", "level": "ERROR", "event": "unhandled_exception", "user_id": "user_55", "exception": "json.decoder.JSONDecodeError", "message": "Expecting value: line 1 column 1 (char 0)", "traceback": "Traceback: RequestProcessor.process_request -> json.loads(request['metadata'])"}
+{"timestamp": "2024-06-15T10:02:00Z", "level": "ERROR", "event": "crash", "message": "Server returned 500 for user_55 order request. Metadata field contained malformed JSON string. No try/except around json.loads() in process_request()."}
+{"timestamp": "2024-06-15T10:03:00Z", "level": "INFO", "event": "request", "type": "order", "user_id": "user_77", "item_count": 3}
+{"timestamp": "2024-06-15T10:03:00Z", "level": "INFO", "event": "response", "user_id": "user_77", "status": "ok", "total": 74.97}
+{"timestamp": "2024-06-15T10:04:00Z", "level": "WARNING", "event": "precision_error", "user_id": "user_88", "message": "Calculated total 0.30000000000000004 for items: 3x $0.10. Should be 0.30. Float arithmetic issue in calculate_total()."}

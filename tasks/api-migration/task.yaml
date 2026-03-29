@@ -1,0 +1,23 @@
+instruction: |
+  The file `api.py` implements a simple REST API framework with 5 endpoints under
+  `/api/v1/...`. Your task is to create `/api/v2/...` versions of all endpoints with
+  a new response schema while keeping the v1 endpoints working.
+
+  Changes for v2:
+  1. All response keys must be camelCase instead of snake_case
+     (e.g., `user_name` -> `userName`, `created_at` -> `createdAt`)
+  2. List endpoints must wrap results in a pagination envelope:
+     `{"items": [...], "total": N, "page": 1, "pageSize": N}`
+  3. Error responses must use `{"error": {"code": "...", "message": "..."}}`
+     instead of `{"error": "..."}`
+  4. Single-item endpoints must wrap the result in `{"data": {...}}`
+
+  The v2 endpoints should be added in the same `api.py` file. The routing framework
+  and data layer in `app.py` and `models.py` can be modified as needed.
+
+  Run `pytest tests/ -v` to verify.
+category: software-engineering
+difficulty: medium
+tier: full
+tags: [api, migration, multi-file]
+expert_time_estimate_min: 10

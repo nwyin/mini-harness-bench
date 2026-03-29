@@ -1,0 +1,26 @@
+instruction: |
+  The workspace contains 5 Python modules that form a small application:
+  - `models.py`: data models
+  - `validators.py`: validation logic
+  - `serializers.py`: serialization/deserialization
+  - `services.py`: business logic
+  - `utils.py`: utility functions
+
+  These modules have circular import dependencies that cause ImportError at
+  runtime. Your task is to restructure the imports to break the circular
+  dependencies while keeping the SAME public API.
+
+  Requirements:
+  - All functions/classes that currently exist must remain importable from
+    their current module (e.g., `from models import User` must still work)
+  - You may move implementation details, add new internal modules, use lazy
+    imports, or restructure code — whatever it takes to break the cycles
+  - Do NOT rename any public functions or classes
+  - Do NOT change function signatures or return values
+
+  Run `pytest tests/ -v` to verify your solution.
+category: software-engineering
+difficulty: medium
+tier: standard
+tags: [imports, refactoring, circular-dependency]
+expert_time_estimate_min: 5

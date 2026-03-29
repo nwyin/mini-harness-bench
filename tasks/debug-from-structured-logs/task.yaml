@@ -1,0 +1,23 @@
+instruction: |
+  The file `server.py` implements a simple request-processing server. Under certain
+  conditions it crashes or returns incorrect results. The file `logs/app.log` contains
+  structured JSON logs from a production run that shows the failure pattern.
+
+  Analyze the logs to identify the root causes and fix `server.py`. There are three
+  bugs to find:
+
+  1. A race-condition-like bug: when two requests for the same user arrive in quick
+     succession, the second one corrupts the cache (the cache update is not atomic).
+  2. A numeric precision bug: currency calculations use floating point and accumulate
+     rounding errors on large orders.
+  3. A missing error handler: requests with malformed JSON in the `metadata` field
+     cause an unhandled exception instead of a graceful error response.
+
+  The logs show all three failure patterns. Fix all three bugs in `server.py`.
+
+  Run `pytest tests/ -v` to verify your fixes.
+category: debugging
+difficulty: medium
+tier: full
+tags: [debugging, logs, multi-bug]
+expert_time_estimate_min: 8

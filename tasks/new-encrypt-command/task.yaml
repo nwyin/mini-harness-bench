@@ -1,0 +1,29 @@
+instruction: |
+  Implement an encryption CLI tool in `encrypt.py`. The tool should support two
+  encryption methods: Caesar cipher and ROT13.
+
+  Command-line arguments (use argparse):
+  - `--method`: either "caesar" or "rot13" (required)
+  - `--shift`: integer shift value (required for caesar, ignored for rot13)
+  - `--input-file`: path to input text file (required)
+  - `--output-file`: path to output file (required)
+
+  Behavior:
+  - Caesar cipher shifts each letter by the given amount (wrapping a-z and A-Z
+    separately). Non-letter characters are left unchanged.
+  - ROT13 is equivalent to Caesar with shift=13, but the `--shift` flag should
+    be ignored (not required) when method is rot13.
+  - The tool reads the input file, encrypts its contents, and writes the result
+    to the output file.
+  - If `--method` is "caesar" and `--shift` is not provided, exit with code 1
+    and print an error message to stderr.
+
+  A skeleton `encrypt.py` with argparse boilerplate is provided. Fill in the
+  encryption logic.
+
+  Run `pytest tests/ -v` to verify your solution.
+category: software-engineering
+difficulty: easy
+tier: smoke
+tags: [cli, encryption, argparse]
+expert_time_estimate_min: 5

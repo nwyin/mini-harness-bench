@@ -1,0 +1,62 @@
+instruction: |
+  The `expected/` directory contains intended configuration files (JSON) and the
+  `deployed/` directory contains the actual deployed versions. There are drifts
+  between them.
+
+  Write `detect_drift.py` that compares all JSON config files between the two
+  directories and outputs a JSON drift report to stdout.
+
+  The report format must be:
+  ```json
+  {
+    "drifts": [
+      {
+        "file": "database.json",
+        "type": "value_changed",
+        "path": "connection.pool_size",
+        "expected": 10,
+        "actual": 5
+      },
+      {
+        "file": "cache.json",
+        "type": "key_missing_in_deployed",
+        "path": "ttl_seconds",
+        "expected": 300,
+        "actual": null
+      },
+      {
+        "file": "logging.json",
+        "type": "key_added_in_deployed",
+        "path": "debug_mode",
+        "expected": null,
+        "actual": true
+      },
+      {
+        "file": "auth.json",
+        "type": "file_missing_in_deployed"
+      }
+    ],
+    "summary": {
+      "total_files_checked": 4,
+      "files_with_drifts": 3,
+      "total_drifts": 4
+    }
+  }
+  ```
+
+  Drift types:
+  - `value_changed`: same key exists in both but value differs
+  - `key_missing_in_deployed`: key exists in expected but not in deployed
+  - `key_added_in_deployed`: key exists in deployed but not in expected
+  - `file_missing_in_deployed`: entire file exists in expected but not deployed
+  - `file_added_in_deployed`: entire file exists in deployed but not expected
+
+  Use dot-notation for nested paths (e.g., `connection.pool_size`).
+  The `expected/` and `deployed/` directories are in the current working directory.
+
+  Run `pytest tests/ -v` to verify.
+category: devops
+difficulty: medium
+tier: full
+tags: [config, drift-detection, json]
+expert_time_estimate_min: 8

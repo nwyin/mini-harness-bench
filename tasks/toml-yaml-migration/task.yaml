@@ -1,0 +1,18 @@
+instruction: |
+  Convert the TOML configuration file `config.toml` to YAML format.
+
+  Write a script `migrate.py` that:
+  1. Reads `config.toml` using the `tomli` library (Python 3.11+ also has
+     `tomllib` in stdlib, you may use either)
+  2. Writes the equivalent structure to `config.yaml` using PyYAML
+  3. All values, types, and nesting must be preserved exactly
+  4. Lists should remain as YAML sequences
+  5. Nested tables should become nested YAML mappings
+  6. The output YAML should use default PyYAML formatting (block style)
+
+  Run `pytest tests/ -v` to verify your solution.
+category: devops
+difficulty: easy
+tier: standard
+tags: [toml, yaml, config, migration]
+expert_time_estimate_min: 5

@@ -1,0 +1,5 @@
+[2024-06-01 10:00:00] INFO app.main: Application started
+[2024-06-01 10:00:01] DEBUG app.config: Debug mode enabled
+[2024-06-01 10:00:05] INFO server.http: GET /api/status 200 5ms
+[2024-06-01 10:01:00] WARNING app.memory: Memory usage at 85%
+[2024-06-01 10:02:00] INFO server.http: POST /api/data 201 120ms

@@ -1,0 +1,14 @@
+{
+  "name": "myapp",
+  "version": "2.0.0",
+  "settings": {
+    "debug": false,
+    "log_level": "info",
+    "max_workers": 8
+  },
+  "features": {
+    "auth": true,
+    "cache": true,
+    "metrics": false
+  }
+}

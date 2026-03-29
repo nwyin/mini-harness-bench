@@ -1,0 +1,29 @@
+instruction: |
+  The workspace contains a `Dockerfile` that defines a multi-stage Python application
+  build. Your task is to write an equivalent `setup.sh` bash script that produces the
+  same environment state as the Dockerfile would.
+
+  Specifically, `setup.sh` must:
+  1. Create the same directory structure (WORKDIR, COPY destinations)
+  2. Set the same environment variables (ENV directives)
+  3. Install the same Python packages (from requirements.txt)
+  4. Copy/create the same application files in the right locations
+  5. Create a `.env_manifest.json` file listing all env vars and their values
+  6. Create a `.pkg_manifest.json` file listing all pip-installed packages
+
+  The Dockerfile uses a multi-stage build. Your shell script only needs to replicate
+  the final stage's state (not intermediate build stages).
+
+  Do NOT actually run apt-get or install system packages. Only handle:
+  - Directory creation
+  - File copying/creation
+  - Environment variable setting
+  - pip package installation (use `pip install` or `uv pip install`)
+  - Manifest file generation
+
+  Run `pytest tests/ -v` to verify.
+category: devops
+difficulty: medium
+tier: full
+tags: [dockerfile, shell, devops]
+expert_time_estimate_min: 8

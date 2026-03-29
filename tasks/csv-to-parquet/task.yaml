@@ -1,0 +1,20 @@
+instruction: |
+  Convert the provided `data.csv` file to Parquet format.
+
+  Write a script `convert.py` that:
+  1. Reads `data.csv` using pandas
+  2. Ensures correct column types:
+     - `id`: int
+     - `name`: string
+     - `department`: string
+     - `salary`: float
+     - `start_date`: datetime (parsed from YYYY-MM-DD strings)
+  3. Writes the result to `output.parquet` using pyarrow engine
+  4. The parquet file should preserve all 20 rows and 5 columns
+
+  Run `pytest tests/ -v` to verify your solution.
+category: data-science
+difficulty: easy
+tier: smoke
+tags: [pandas, parquet, data-conversion]
+expert_time_estimate_min: 5

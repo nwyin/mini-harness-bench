@@ -1,0 +1,9 @@
+Please contact the following people:
+- Alice: alice@example.com
+- Bob: BOB.JONES@company.org
+- Carol: carol_99@sub.domain.co.uk
+- Duplicate: alice@example.com (listed again)
+- Dev: dev+tag@startup.io
+- Invalid: not-an-email@
+- Also invalid: @no-user.com
+- HR: human.resources@big-corp.com

@@ -1,0 +1,8 @@
+Resources:
+- Documentation: https://docs.example.com/v2/guide
+- API: https://api.example.com/v1/users?active=true
+- Old wiki: http://wiki.internal.corp/legacy
+- Blog post: https://blog.example.com/2024/03/new-features
+- Duplicate: https://docs.example.com/v2/guide (same link)
+- CDN: https://cdn.example.com/assets/logo.png
+Visit http://example.com for more info.

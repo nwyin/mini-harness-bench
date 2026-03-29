@@ -1,0 +1,22 @@
+instruction: |
+  The `Makefile` in the workspace is broken. It is supposed to build a Python project
+  by running linting, generating config, compiling templates, and producing a final
+  `build/output.txt` report. However, it has several bugs:
+
+  1. Missing `.PHONY` declarations causing targets to conflict with directory names
+  2. Broken dependency ordering: `build/output.txt` depends on files that haven't
+     been generated yet
+  3. A variable expansion bug: `$(SOURCES)` is used where `${SOURCES}` or a different
+     variable is needed, causing empty file lists
+  4. The `clean` target doesn't remove all generated files
+  5. The `config` target writes to the wrong path
+
+  Fix the Makefile so that `make all` succeeds and produces the correct output files.
+  Do not modify the Python scripts in `src/`.
+
+  Run `pytest tests/ -v` to verify your fixes.
+category: debugging
+difficulty: medium
+tier: full
+tags: [debugging, makefile, build-system]
+expert_time_estimate_min: 5
