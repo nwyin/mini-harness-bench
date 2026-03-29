@@ -1,0 +1,40 @@
+# Model token pricing (USD per token)
+# Updated: 2026-03-29
+models:
+  # Anthropic
+  claude-sonnet-4-20250514:
+    input: 0.000003
+    output: 0.000015
+    cache_read: 0.0000003
+    cache_write: 0.00000375
+  claude-opus-4-20250514:
+    input: 0.000015
+    output: 0.000075
+    cache_read: 0.0000015
+    cache_write: 0.00001875
+  claude-haiku-4-5-20251001:
+    input: 0.0000008
+    output: 0.000004
+    cache_read: 0.00000008
+    cache_write: 0.0000001
+  # Anthropic aliases
+  claude-sonnet-4-6:
+    input: 0.000003
+    output: 0.000015
+    cache_read: 0.0000003
+    cache_write: 0.00000375
+  claude-opus-4-6:
+    input: 0.000015
+    output: 0.000075
+    cache_read: 0.0000015
+    cache_write: 0.00001875
+  # OpenAI
+  gpt-4o:
+    input: 0.0000025
+    output: 0.00001
+  o3:
+    input: 0.00001
+    output: 0.00004
+  o4-mini:
+    input: 0.0000011
+    output: 0.0000044

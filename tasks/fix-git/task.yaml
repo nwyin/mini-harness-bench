@@ -1,0 +1,15 @@
+instruction: |
+  You are in a git repository. A branch called `feature-auth` was accidentally deleted.
+  It contained important work. The branch was the only reference to those commits.
+
+  Your task:
+  1. Recover the deleted `feature-auth` branch using git reflog or other git tools
+  2. The branch should point to a commit whose message contains "Add authentication module"
+  3. Verify the branch exists and contains a file called `auth.py`
+
+  Do NOT create new commits. Just recover the branch reference.
+category: software-engineering
+difficulty: easy
+tier: smoke
+tags: [git, recovery]
+expert_time_estimate_min: 5

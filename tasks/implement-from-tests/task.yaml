@@ -1,0 +1,19 @@
+instruction: |
+  There is a file `tests/test_calculator.py` containing pytest tests for a Calculator class.
+  Your job is to create a file called `calculator.py` in the current directory that implements
+  the Calculator class so that all the tests pass.
+
+  The Calculator class should support:
+  - add(a, b) -> returns a + b
+  - subtract(a, b) -> returns a - b
+  - multiply(a, b) -> returns a * b
+  - divide(a, b) -> returns a / b, raises ValueError on division by zero
+  - power(base, exp) -> returns base ** exp
+  - modulo(a, b) -> returns a % b, raises ValueError on division by zero
+
+  Run `pytest tests/test_calculator.py -v` to verify your solution.
+category: software-engineering
+difficulty: easy
+tier: smoke
+tags: [tdd, implementation]
+expert_time_estimate_min: 5

@@ -1,0 +1,24 @@
+instruction: |
+  You have a file `dates.txt` containing dates in various formats, one per line.
+  Write a Python script called `normalize.py` that:
+
+  1. Reads `dates.txt`
+  2. Parses each date (handling multiple formats)
+  3. Converts each to ISO 8601 format (YYYY-MM-DD)
+  4. Writes the normalized dates to `output.txt`, one per line, in the same order
+
+  The input formats you'll encounter:
+  - MM/DD/YYYY (e.g., 03/15/2024)
+  - DD-Mon-YYYY (e.g., 15-Mar-2024)
+  - Month DD, YYYY (e.g., March 15, 2024)
+  - YYYY.MM.DD (e.g., 2024.03.15)
+  - DD/MM/YYYY (European format, indicated by day > 12)
+
+  Use only the Python standard library (no pandas, dateutil, etc.).
+
+  Run `pytest tests/ -v` to verify.
+category: data-science
+difficulty: easy
+tier: smoke
+tags: [parsing, dates, scripting]
+expert_time_estimate_min: 5

@@ -1,0 +1,21 @@
+instruction: |
+  You have a CSV file `input.csv` with sales data. Write a Python script called `etl.py` that:
+
+  1. Reads `input.csv`
+  2. Filters out rows where `quantity` is 0 or negative
+  3. Adds a column `total` = `price` * `quantity`
+  4. Groups by `category` and computes:
+     - `total_revenue`: sum of `total`
+     - `num_orders`: count of rows
+     - `avg_price`: mean of `price`
+  5. Sorts the result by `total_revenue` descending
+  6. Writes the result to `output.csv` with columns: category, total_revenue, num_orders, avg_price
+
+  The output CSV should have a header row. Numeric values should not be rounded.
+
+  Run `pytest tests/ -v` to verify.
+category: data-science
+difficulty: easy
+tier: smoke
+tags: [pandas, etl, csv]
+expert_time_estimate_min: 3

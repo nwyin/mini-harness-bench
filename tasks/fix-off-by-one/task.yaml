@@ -1,0 +1,16 @@
+instruction: |
+  The file `process_data.py` contains three data processing functions that each have
+  off-by-one bugs. Fix all the bugs so that the tests pass.
+
+  The functions are:
+  - `sliding_window_sum(data, window_size)`: returns a list of sums for each sliding window
+  - `paginate(items, page_size, page_num)`: returns items for the given 1-indexed page number
+  - `find_range_indices(sorted_data, low, high)`: returns (start, end) indices such that
+    sorted_data[start:end] contains all values where low <= value <= high
+
+  Run `pytest tests/ -v` to check your fixes.
+category: debugging
+difficulty: easy
+tier: smoke
+tags: [debugging, off-by-one]
+expert_time_estimate_min: 5

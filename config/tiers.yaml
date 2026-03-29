@@ -1,0 +1,9 @@
+# Tier definitions
+# Each tier includes all tasks from lower tiers (smoke < standard < full)
+tiers:
+  smoke:
+    default_agent_timeout_sec: 120
+  standard:
+    default_agent_timeout_sec: 180
+  full:
+    default_agent_timeout_sec: 300

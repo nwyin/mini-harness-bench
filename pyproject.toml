@@ -1,0 +1,26 @@
+[project]
+name = "mini-harness-bench"
+version = "0.1.0"
+description = "A focused benchmark for evaluating AI coding agents"
+requires-python = ">=3.12"
+dependencies = ["pyyaml>=6.0"]
+
+[project.scripts]
+mhb = "mhb.cli:main"
+
+[tool.ruff]
+line-length = 144
+exclude = ["terminal-bench"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["mhb"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
