@@ -13,10 +13,10 @@ models:
     cache_read: 0.0000015
     cache_write: 0.00001875
   claude-haiku-4-5-20251001:
-    input: 0.0000008
-    output: 0.000004
-    cache_read: 0.00000008
-    cache_write: 0.0000001
+    input: 0.000001
+    output: 0.000005
+    cache_read: 0.0000001
+    cache_write: 0.00000125
   # Anthropic aliases
   claude-sonnet-4-5:
     input: 0.000003
@@ -38,8 +38,8 @@ models:
     input: 0.0000025
     output: 0.00001
   o3:
-    input: 0.00001
-    output: 0.00004
+    input: 0.000002
+    output: 0.000008
   o4-mini:
     input: 0.0000011
     output: 0.0000044
