@@ -8,10 +8,8 @@ from mhb.agents.base import AgentResult, BaseAgent
 
 FEEDBACK_SUFFIX = """
 
-After completing your work, verify it by running the tests:
-  python -m pytest tests/ -v
-If any tests fail, read the error output carefully, fix the issues, and re-run until all tests pass.
-Do not stop until all tests pass or you've exhausted your attempts."""
+After completing your work, verify by running: python -m pytest tests/ -v
+If tests fail, fix the issues and re-run. Once all tests pass, stop immediately."""
 
 
 class CodexAgent(BaseAgent):
