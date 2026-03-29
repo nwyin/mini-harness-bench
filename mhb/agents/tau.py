@@ -8,6 +8,13 @@ from pathlib import Path
 
 from mhb.agents.base import AgentResult, BaseAgent
 
+FEEDBACK_SUFFIX = """
+
+After completing your work, verify it by running the tests:
+  python -m pytest tests/ -v
+If any tests fail, read the error output carefully, fix the issues, and re-run until all tests pass.
+Do not stop until all tests pass or you've exhausted your attempts."""
+
 
 class TauAgent(BaseAgent):
     name = "tau"
@@ -15,11 +22,12 @@ class TauAgent(BaseAgent):
     def run(self, instruction: str, workdir: Path, timeout: int, model: str | None = None, task_id: str | None = None) -> AgentResult:
         trace_dir = Path(tempfile.mkdtemp(prefix="mhb-tau-trace-"))
         stats_path = trace_dir / "tau-stats.json"
+        full_instruction = instruction.strip() + FEEDBACK_SUFFIX
 
         cmd = [
             "tau",
             "--prompt",
-            instruction,
+            full_instruction,
             "--tools",
             "bash,file_read,file_write,file_edit,grep,glob",
             "--trace-output",

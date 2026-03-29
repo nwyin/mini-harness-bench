@@ -7,21 +7,33 @@ from pathlib import Path
 
 from mhb.agents.base import AgentResult, BaseAgent
 
+FEEDBACK_SUFFIX = """
+
+After completing your work, verify it by running the tests:
+  python -m pytest tests/ -v
+If any tests fail, read the error output carefully, fix the issues, and re-run until all tests pass.
+Do not stop until all tests pass or you've exhausted your attempts."""
+
 
 class ClaudeCodeAgent(BaseAgent):
     name = "claude-code"
 
     def run(self, instruction: str, workdir: Path, timeout: int, model: str | None = None, task_id: str | None = None) -> AgentResult:
+        full_instruction = instruction.strip() + FEEDBACK_SUFFIX
+
         cmd = [
             "claude",
             "-p",
-            instruction,
+            full_instruction,
             "--output-format",
             "stream-json",
+            "--verbose",
             "--allowedTools",
             "Edit,Write,Bash,Read,Glob,Grep",
             "--max-turns",
             "50",
+            "--permission-mode",
+            "bypassPermissions",
         ]
         if model:
             cmd.extend(["--model", model])
