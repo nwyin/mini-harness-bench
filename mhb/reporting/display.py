@@ -14,7 +14,8 @@ def format_results_table(results: dict) -> str:
         correctness = data.get("correctness", 0.0)
         total_tokens = 0
         if data.get("tokens"):
-            total_tokens = data["tokens"].get("input", 0) + data["tokens"].get("output", 0)
+            t = data["tokens"]
+            total_tokens = t.get("input", 0) + t.get("output", 0) + t.get("cache_read", 0) + t.get("cache_write", 0)
         cost = data.get("cost_usd", 0.0) or 0.0
         wall = data.get("wall_time_sec", {}).get("total", 0.0)
         timed_out = data.get("timed_out", False)

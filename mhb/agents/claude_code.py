@@ -56,14 +56,32 @@ def _parse_stream_json(output: str) -> list[dict]:
 
 
 def _extract_tokens(events: list[dict]) -> dict | None:
+    # Prefer the 'result' event which has true totals (per-turn events are duplicated in stream-json)
+    for ev in reversed(events):
+        if ev.get("type") == "result":
+            usage = ev.get("usage")
+            if usage:
+                return {
+                    "input": usage.get("input_tokens", 0),
+                    "output": usage.get("output_tokens", 0),
+                    "cache_read": usage.get("cache_read_input_tokens", 0),
+                    "cache_write": usage.get("cache_creation_input_tokens", 0),
+                }
+
+    # Fallback: deduplicate per-turn events and sum
+    seen = set()
     total = {"input": 0, "output": 0, "cache_read": 0, "cache_write": 0}
     found = False
     for ev in events:
         usage = ev.get("usage") or ev.get("message", {}).get("usage")
         if usage:
+            key = (usage.get("input_tokens"), usage.get("output_tokens"), usage.get("cache_read_input_tokens"))
+            if key in seen:
+                continue
+            seen.add(key)
             found = True
             total["input"] += usage.get("input_tokens", 0)
             total["output"] += usage.get("output_tokens", 0)
-            total["cache_read"] += usage.get("cache_read_input_tokens", usage.get("cache_creation_input_tokens", 0))
+            total["cache_read"] += usage.get("cache_read_input_tokens", 0)
             total["cache_write"] += usage.get("cache_creation_input_tokens", 0)
     return total if found else None

@@ -229,7 +229,8 @@ def run_benchmark(
     total_tokens = 0
     for r in task_results.values():
         if r.get("tokens"):
-            total_tokens += r["tokens"].get("input", 0) + r["tokens"].get("output", 0)
+            t = r["tokens"]
+            total_tokens += t.get("input", 0) + t.get("output", 0) + t.get("cache_read", 0) + t.get("cache_write", 0)
     total_wall = sum(r["wall_time_sec"]["total"] for r in task_results.values())
 
     results = {
