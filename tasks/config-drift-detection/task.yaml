@@ -52,7 +52,9 @@ instruction: |
   - `file_added_in_deployed`: entire file exists in deployed but not expected
 
   Use dot-notation for nested paths (e.g., `connection.pool_size`).
-  The `expected/` and `deployed/` directories are in the current working directory.
+  The script must accept two optional command-line arguments: the paths to the
+  expected and deployed directories. If not provided, default to `expected/` and
+  `deployed/` in the current working directory.
 
   Run `pytest tests/ -v` to verify.
 category: devops
