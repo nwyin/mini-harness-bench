@@ -1,0 +1,12 @@
+instruction: |
+  This module has grown organically and accumulated dead code. Remove all dead
+  code -- functions that are never called by any path through `process()`, the
+  `HANDLERS` dict, or `getattr` dispatch. Keep all functions that are reachable.
+  Do not change any function's behavior.
+
+  Run `pytest tests/ -v` to verify your changes.
+category: software-engineering
+difficulty: hard
+tier: full
+tags: [refactoring, dead-code, getattr, dispatch]
+expert_time_estimate_min: 12

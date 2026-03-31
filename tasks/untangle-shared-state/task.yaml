@@ -1,0 +1,16 @@
+instruction: |
+  The test suite in `tests/` fails when run as a whole (`pytest tests/ -v`) but
+  individual tests pass in isolation (e.g. `pytest tests/test_app.py::test_basic_request -v`).
+
+  Diagnose why tests interfere with each other and fix the root cause. The issue
+  is shared mutable state between modules.
+
+  Requirements:
+  - All public APIs must remain the same (function signatures, class names, module names)
+  - Tests must pass when run together: `pytest tests/ -v`
+  - The fix should be structural, not just adding teardown/reset calls in tests
+category: software-engineering
+difficulty: hard
+tier: full
+tags: [software-engineering, shared-state, refactoring]
+expert_time_estimate_min: 10

@@ -1,0 +1,27 @@
+# Application configuration
+input:
+  delimiter: ","
+  has_header: true
+  encoding: utf-8
+
+output:
+  delimiter: ","
+  encoding: utf-8
+
+transforms:
+  # Date format for parsing date columns
+  date_format: "%Y-%m-%d"
+  # Columns to treat as dates
+  date_columns:
+    - date
+    - due_date
+  # Numeric precision for rounding
+  decimal_places: 2
+
+validation:
+  required_columns:
+    - id
+    - date
+    - amount
+    - description
+  max_rows: 10000

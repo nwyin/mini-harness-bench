@@ -1,0 +1,17 @@
+Protocol Examples
+=================
+
+These examples show how message dictionaries map to their binary (hex) encoding.
+Use these alongside server.py's decode_message() to understand the wire format.
+
+Example 1 - Simple request:
+  Input dict: {"type": "request", "action": "ping"}
+  Encoded hex: 11000106616374696f6e040070696e671c
+
+Example 2 - Response with two fields:
+  Input dict: {"type": "response", "status": "ok", "user": "alice"}
+  Encoded hex: 1b00020673746174757302006f6b04757365720500616c6963657f
+
+Example 3 - Error with two fields:
+  Input dict: {"type": "error", "code": "404", "detail": "not found"}
+  Encoded hex: 20000304636f646503003430340664657461696c09006e6f7420666f756e6424

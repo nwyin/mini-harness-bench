@@ -1,0 +1,18 @@
+instruction: |
+  A performance regression was introduced recently. Run `python benchmark.py` to
+  see the slowdown — it should complete in under 0.5 seconds but now takes over
+  2 seconds.
+
+  Use git history (`git log`, `git diff`, `git show`) to find which commit
+  introduced the regression, identify the root cause, and fix it.
+
+  IMPORTANT: Do NOT revert entire commits. The problematic commit also contains
+  a legitimate bug fix in another function that must be preserved.
+
+  Run `python benchmark.py` to confirm the fix, then run `pytest tests/ -v` to
+  verify correctness.
+category: debugging
+difficulty: hard
+tier: full
+tags: [debugging, performance, git-history]
+expert_time_estimate_min: 8

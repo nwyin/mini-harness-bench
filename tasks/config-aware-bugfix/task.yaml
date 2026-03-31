@@ -1,0 +1,16 @@
+instruction: |
+  Users report that the application produces incorrect output for the input in
+  `failing_input.csv`. The expected output is in `expected_output.csv`. Debug
+  and fix the issue.
+
+  The application reads configuration from `config.yaml`, processes CSV input
+  using `transforms.py`, validates output with `validators.py`, and writes
+  the result. The code itself is correct -- it faithfully implements the
+  configured behavior.
+
+  Run `pytest tests/ -v` to verify your fix.
+category: debugging
+difficulty: hard
+tier: full
+tags: [debugging, config, silent-error, csv]
+expert_time_estimate_min: 10

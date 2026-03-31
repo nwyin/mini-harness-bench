@@ -1,0 +1,14 @@
+instruction: |
+  The server can decode messages but the client's `encode_message()` is a stub.
+  Implement it by studying the server's `decode_message()` and the protocol examples
+  in `protocol_examples.txt`. Run tests to verify roundtrip encoding/decoding.
+
+  The server's decode function uses deliberately unhelpful variable names, so you will
+  need to carefully trace through the logic to understand the binary protocol format.
+
+  Run `pytest tests/ -v` to check your implementation.
+category: software-engineering
+difficulty: hard
+tier: full
+tags: [reverse-engineering, binary-protocol, encoding]
+expert_time_estimate_min: 15

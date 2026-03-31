@@ -1,0 +1,13 @@
+instruction: |
+  Implement the `TextProcessor` class in `text_processor.py` according to the
+  specification in `SPEC.md`. The class should have five methods: `clean`,
+  `tokenize`, `validate`, `transform`, and `summarize`.
+
+  Read the spec carefully — it covers edge cases, error handling, and expected
+  behavior for each method. Then run `pytest tests/ -v` to verify your
+  implementation.
+category: software-engineering
+difficulty: hard
+tier: full
+tags: [software-engineering, spec-compliance, implementation]
+expert_time_estimate_min: 10
