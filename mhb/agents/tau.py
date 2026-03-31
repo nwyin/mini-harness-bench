@@ -70,6 +70,8 @@ def _parse_run_json(path: Path) -> tuple[dict | None, float | None]:
         tokens = {
             "input": data.get("total_input_tokens", 0),
             "output": data.get("total_output_tokens", 0),
+            "cache_read": data.get("total_cache_read_input_tokens", 0),
+            "cache_write": data.get("total_cache_creation_input_tokens", 0),
         }
         cost = data.get("total_cost")
         return tokens, cost
